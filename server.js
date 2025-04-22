@@ -33,6 +33,7 @@ app.get("/api/bug/save", (req, res) => {
     severity: +req.query.severity,
     createdAt: +req.query.createdAt,
   }
+  console.log(bugToSave);
   bugService
     .save(bugToSave)
     .then((savedBugs) => res.send(savedBugs))
