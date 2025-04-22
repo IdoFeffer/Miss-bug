@@ -1,9 +1,10 @@
 import { utilService } from './util.service.js'
 import { storageService } from './async-storage.service.js'
 
-const STORAGE_KEY = 'bugs'
+const url = "/api/bug/"
 
-_createBugs()
+// const STORAGE_KEY = 'bugs'
+// _createBugs()
 
 export const bugService = {
     query,
@@ -14,28 +15,32 @@ export const bugService = {
 }
 
 function query(filterBy) {
-    return storageService.query(STORAGE_KEY)
-    .then(bugs => {
+    // return storageService.query(STORAGE_KEY)
+    // .then(bugs => {
 
-        if (filterBy.txt) {
-            const regExp = new RegExp(filterBy.txt, 'i')
-            bugs = bugs.filter(bug => regExp.test(bug.title))
-        }
+    //     if (filterBy.txt) {
+    //         const regExp = new RegExp(filterBy.txt, 'i')
+    //         bugs = bugs.filter(bug => regExp.test(bug.title))
+    //     }
 
-        if (filterBy.minSeverity) {
-            bugs = bugs.filter(bug => bug.severity >= filterBy.minSeverity)
-        }
+    //     if (filterBy.minSeverity) {
+    //         bugs = bugs.filter(bug => bug.severity >= filterBy.minSeverity)
+    //     }
 
-        return bugs
-    })
+    //     return bugs
+    // })
+
+    return axios.get(url).then(res => res.data)
 }
 
 function getById(bugId) {
-    return storageService.get(STORAGE_KEY, bugId)
+    // return storageService.get(STORAGE_KEY, bugId)
+    return axios.get(url + bugId).then(res => res.data)
 }
 
 function remove(bugId) {
-    return storageService.remove(STORAGE_KEY, bugId)
+    // return storageService.remove(STORAGE_KEY, bugId)
+    return axios.get(url +bugId+'/remove').then(res => res.data)
 }
 
 function save(bug) {
