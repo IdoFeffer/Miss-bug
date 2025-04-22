@@ -1,6 +1,7 @@
 import { utilService } from './util.service.js'
 import { storageService } from './async-storage.service.js'
 
+
 const url = "/api/bug/"
 
 // const STORAGE_KEY = 'bugs'
@@ -45,9 +46,12 @@ function remove(bugId) {
 
 function save(bug) {
     if (bug._id) {
-        return storageService.put(STORAGE_KEY, bug)
+        // return storageService.put(STORAGE_KEY, bug)
+        return axios.put(url + bug._id, bug).then(res => res.data)
+        
     } else {
-        return storageService.post(STORAGE_KEY, bug)
+        // return storageService.post(STORAGE_KEY, bug)
+        return axios.post(url, bug).then(res => res.data)
     }
 }
 
