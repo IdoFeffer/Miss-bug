@@ -3,23 +3,24 @@ const { Link, useParams } = ReactRouterDOM
 
 // import { bugService } from "../services/bug.service.local.js"
 import { bugService } from "../services/bug.service.js"
-import { showErrorMsg } from '../services/event-bus.service.js'
+import { showErrorMsg } from "../services/event-bus.service.js"
 
 export function BugDetails() {
   const [bug, setBug] = useState(null)
   const { bugId } = useParams()
 
   useEffect(() => {
-    bugService
-      .getById(bugId)
+    bugService._setNextPrevBugId(bugId)
       .then((bug) => setBug(bug))
       .catch((err) => showErrorMsg(`Cannot load bug`, err))
-  }, [])
+  }, [bugId])
+
+  if (!bug) return <div>Loading bug...</div>
 
   return (
     <div className="bug-details">
       <h3>Bug Details</h3>
-      {!bug && <p className="loading">Loading....</p>}
+      {/* {!bug && <p className="loading">Loading....</p>} */}
       {bug && (
         <div>
           <h4>{bug.title}</h4>
@@ -36,6 +37,10 @@ export function BugDetails() {
       )}
       <hr />
       <Link to="/bug">Back to List</Link>
+      <section>
+        <Link to={`/bug/${bug.prevBugId}`}>Prev</Link>
+        <Link to={`/bug/${bug.nextBugId}`}>Next</Link>
+      </section>
     </div>
   )
 }

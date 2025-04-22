@@ -1,42 +1,72 @@
 [
     {
-        "_id": "a5",
-        "title": "Cannot save a new bug",
-        "description": "problem when clicking Save",
-        "severity": 1,
-        "createdAt": 1542107359454
-    },
-    {
         "_id": "a6",
-        "title": "Cannot save a new bug",
-        "description": "problem when clicking Save",
-        "severity": 3,
-        "createdAt": 1542107359454
+        "title": "Page not loading",
+        "description": "App hangs on loading screen",
+        "severity": 1,
+        "createdAt": 1642107359454
     },
     {
         "_id": "a7",
-        "title": "Cannot save a new bug",
-        "description": "problem when clicking Save",
-        "severity": 3,
-        "createdAt": 1542107359454
+        "title": "Login fails",
+        "description": "User can't log in with correct credentials",
+        "severity": 2,
+        "createdAt": 1643107359454
     },
     {
         "_id": "a8",
-        "title": "Cannot save a new bug",
-        "description": "problem when clicking Save",
-        "severity": 3,
-        "createdAt": 1542107359454
+        "title": "Button not clickable",
+        "description": "Submit button has no response",
+        "severity": 1,
+        "createdAt": 1644107359454
     },
     {
-        "_id": "0awDq",
-        "title": "vd",
+        "_id": "a9",
+        "title": "Layout broken on mobile",
+        "description": "UI is distorted on small screens",
         "severity": 2,
-        "createdAt": null
+        "createdAt": 1645107359454
     },
     {
-        "_id": "TJ7h7",
-        "title": "ido",
-        "severity": 4,
-        "createdAt": null
+        "_id": "b1",
+        "title": "Data not saved",
+        "description": "Changes disappear after refresh",
+        "severity": 3,
+        "createdAt": 1646107359454
+    },
+    {
+        "_id": "b2",
+        "title": "Image upload fails",
+        "description": "Upload stuck with no error message",
+        "severity": 2,
+        "createdAt": 1647107359454
+    },
+    {
+        "_id": "b3",
+        "title": "Notifications not working",
+        "description": "No alerts shown for new messages",
+        "severity": 1,
+        "createdAt": 1648107359454
+    },
+    {
+        "_id": "b4",
+        "title": "Search returns empty",
+        "description": "Results not shown even when data exists",
+        "severity": 2,
+        "createdAt": 1649107359454
+    },
+    {
+        "_id": "b5",
+        "title": "Crash on logout",
+        "description": "App crashes when clicking logout",
+        "severity": 2,
+        "createdAt": 1650107359454
+    },
+    {
+        "_id": "b6",
+        "title": "Incorrect total in cart",
+        "description": "Price calculation is wrong in checkout",
+        "severity": 3,
+        "createdAt": 1651107359454
     }
 ]
