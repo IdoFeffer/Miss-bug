@@ -14,10 +14,6 @@ export const bugService = {
   _setNextPrevBugId,
 }
 
-// function query(filterBy) {
-//   return axios.get(url).then((res) => res.data)
-// }
-
 function query(filterBy = {}) {
   return axios.get('/api/bug', { params: filterBy }).then(res => res.data)
 }
@@ -39,7 +35,6 @@ function save(bug) {
     return axios.post(url, bug).then(res => res.data)
   }
 }
-
 
 
 function _createBugs() {

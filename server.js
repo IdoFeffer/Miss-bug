@@ -10,22 +10,22 @@ const app = express()
 app.use(express.static("public"))
 app.use(cookieParser())
 app.use(express.json())
-app.set('query parser', 'extended')
+app.set("query parser", "extended")
 
 //* Express Routing:
 //* Read
 app.get("/api/bug", (req, res) => {
-  const { txt = "", minSeverity = 0 } = req.query
+  // const { txt = "", minSeverity = 0 } = req.query
   const filterBy = {
-    // txt: req.query.txt || '',
-    // minSeverity: +req.query.minSeverity || 0,
-    ...req.query,
+    txt: req.query.txt || "",
+    minSeverity: +req.query.minSeverity || 0,
     labels: req.query.labels ? [].concat(req.query.labels) : [],
     sortBy: req.query.sortBy || "title",
     sortDir: +req.query.sortDir || 1,
     pageIdx: +req.query.pageIdx || 0,
   }
 
+  console.log("FILTER BY:", filterBy)
   bugService
     .query(filterBy)
     .then((bugs) => res.send(bugs))
@@ -76,12 +76,13 @@ app.delete("/api/bug/:bugId", (req, res) => {
 
 //* Create
 app.post("/api/bug", (req, res) => {
+  console.log("req.body:", req.body)
   const bugToSave = {
     _id: req.body._id,
     title: req.body.title,
     description: req.body.description,
-    severity: +req.body.severity,
-    createdAt: +req.body.createdAt,
+    severity: req.body.severity,
+    createdAt: req.body.createdAt,
     labels: req.body.labels,
   }
   bugService
@@ -95,9 +96,6 @@ app.post("/api/bug", (req, res) => {
 
 //* Edit
 app.put("/api/bug/:bugId", (req, res) => {
-  // const { bugId } = req.params
-  console.log("req.body:", req.body)
-
   const bugToSave = {
     _id: req.body._id,
     title: req.body.title,
@@ -106,7 +104,6 @@ app.put("/api/bug/:bugId", (req, res) => {
     createdAt: req.body.createdAt,
     labels: req.body.labels,
   }
-  console.log("bugToSave:", bugToSave)
   bugService
     .save(bugToSave)
     .then((savedBug) => res.send(savedBug))

@@ -2,7 +2,6 @@ import fs from "fs"
 import { utilService } from "./util.service.js"
 
 const bugs = utilService.readJsonFile("data/bug.json")
-const PAGE_SIZE = 3
 
 export const bugService = {
   query,
@@ -11,29 +10,53 @@ export const bugService = {
   save,
 }
 
-function query() {
-    return Promise.resolve(bugs)
+function query(filterBy = {}) {
+  const {
+    txt = "",
+    minSeverity = 0,
+    labels = [],
+    sortBy = "title",
+    sortDir = 1,
+    pageIdx = 0,
+  } = filterBy
+
+  const normalizedLabels = Array.isArray(labels)
+    ? labels.map((label) => label.toLowerCase())
+    : [labels.toLowerCase()]
+
+  let filteredBugs = bugs
+  if (txt) {
+    const regex = new RegExp(txt, "i")
+    filteredBugs = filteredBugs.filter((bug) => regex.test(bug.title))
+  }
+  if (minSeverity) {
+    filteredBugs = filteredBugs.filter((bug) => bug.severity >= +minSeverity)
+  }
+  if (normalizedLabels.length) {
+    filteredBugs = filteredBugs.filter((bug) =>
+      bug.labels?.some((label) =>
+        normalizedLabels.includes(label.toLowerCase())
+      )
+    )
+  }
+  filteredBugs.sort((a, b) => {
+    const valA = a[sortBy]
+    const valB = b[sortBy]
+
+    if (typeof valA === "string") {
+      return valA.localeCompare(valB) * sortDir
+    } else {
+      return (valA - valB) * sortDir
+    }
+  })
+
+  // const pageSize = 3
+  // const startIdx = pageIdx * pageSize
+  // const bugsPage = filteredBugs.slice(startIdx, startIdx + pageSize)
+
+  // return Promise.resolve(bugsPage)
+  return Promise.resolve(filteredBugs)
 }
-
-// function query(filterBy = {}) {
-//   let bugsToDisplay = bugs
-
-//   if (filterBy.txt) {
-//     const regex = new RegExp(txt, "i")
-//     bugsToDisplay = bugsToDisplay.filter((bug) => regex.test(bug.title))
-//   }
-
-//   if (filterBy.severity) {
-//     bugsToDisplay = bugsToDisplay.filter((bug) => bug.severity >= +minSeverity)
-//   }
-
-//   if (labels.length) {
-//     bugsToDisplay = bugsToDisplay.filter((bug) => {
-//       bug.labels?.some((label) => labels.includes(label.toLowerCase()))
-//     })
-//   }
-//   return Promise.resolve(bugsToDisplay)
-// }
 
 function getById(bugId) {
   const bug = bugs.find((bug) => bug._id === bugId)
@@ -54,6 +77,8 @@ function save(bugToSave) {
     bugs[bugIdx] = bugToSave
   } else {
     bugToSave._id = utilService.makeId()
+    bugToSave.createdAt = Date.now()
+    bugToSave.description = utilService.makeLorem()
     bugs.push(bugToSave)
   }
   return _saveBugsToFile().then(() => bugToSave)
