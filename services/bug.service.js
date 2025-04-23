@@ -50,12 +50,12 @@ function query(filterBy = {}) {
     }
   })
 
-  // const pageSize = 3
-  // const startIdx = pageIdx * pageSize
-  // const bugsPage = filteredBugs.slice(startIdx, startIdx + pageSize)
+  const pageSize = 3
+  const startIdx = pageIdx * pageSize
+  const bugsPage = filteredBugs.slice(startIdx, startIdx + pageSize)
 
-  // return Promise.resolve(bugsPage)
-  return Promise.resolve(filteredBugs)
+  return Promise.resolve(bugsPage)
+  // return Promise.resolve(filteredBugs)
 }
 
 function getById(bugId) {

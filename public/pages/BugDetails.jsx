@@ -10,10 +10,16 @@ export function BugDetails() {
   const { bugId } = useParams()
 
   useEffect(() => {
-    bugService._setNextPrevBugId(bugId)
+    bugService
+    loadBug()
+  }, [bugId])
+
+  function loadBug(){
+    bugService
+    .getById(bugId)
       .then((bug) => setBug(bug))
       .catch((err) => showErrorMsg(`Cannot load bug`, err))
-  }, [bugId])
+  }
 
   if (!bug) return <div>Loading bug...</div>
 

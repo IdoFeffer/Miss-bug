@@ -15,13 +15,16 @@ export const bugService = {
 }
 
 function query(filterBy = {}) {
-  return axios.get('/api/bug', { params: filterBy }).then(res => res.data)
+  return axios.get("/api/bug", { params: filterBy }).then((res) => res.data)
 }
 
 function getById(bugId) {
-  return axios.get(url + bugId)
-    .then((res) => res.data)
-    .then((bug) => _setNextPrevBugId(bug))
+  return axios
+    .get(url + bugId)
+    .then((res) => {
+      return res.data
+    })
+    .then((bug)=>_setNextPrevBugId(bug))
 }
 
 function remove(bugId) {
@@ -30,12 +33,11 @@ function remove(bugId) {
 
 function save(bug) {
   if (bug._id) {
-    return axios.put(url + bug._id, bug).then(res => res.data)
+    return axios.put(url + bug._id, bug).then((res) => res.data)
   } else {
-    return axios.post(url, bug).then(res => res.data)
+    return axios.post(url, bug).then((res) => res.data)
   }
 }
-
 
 function _createBugs() {
   let bugs = utilService.loadFromStorage(STORAGE_KEY)
@@ -66,26 +68,28 @@ function _createBugs() {
   utilService.saveToStorage(STORAGE_KEY, bugs)
 }
 
+// function getDefaultFilter() {
+//   return { txt: "", minSeverity: 0 }
+// }
+
 function getDefaultFilter() {
-  return { txt: "", minSeverity: 0 }
+  return {
+    txt: "",
+    minSeverity: 0,
+    sortBy: "title",
+    sortDir: 1,
+    labels: [],
+    pageIdx: 0,
+  }
 }
 
-function _setNextPrevBugId(bugId) {
-  return axios.get(url).then((res) => {
-    const bugs = res.data
-    const idx = bugs.findIndex((bug) => String(bug._id) === String(bugId))
-
-    if (idx === -1) {
-      return null
-    }
-
-    const nextBug = bugs[idx + 1] || bugs[0]
-    const prevBug = bugs[idx - 1] || bugs[bugs.length - 1]
-
-    return {
-      ...bugs[idx],
-      nextBugId: nextBug._id,
-      prevBugId: prevBug._id,
-    }
+function _setNextPrevBugId(bug) {
+  return query().then((bugs)=>{
+    const bugIdx = bugs.findIndex((currBug)=>currBug._id === bug._id)
+    const nextBug = bugs[bugIdx + 1] ? bugs[bugIdx + 1] : bugs[0]
+    const prevBug =  bugs[bugIdx - 1] ? bugs[bugIdx - 1] : bugs[bugs.length - 1]
+    bug.nextBugId = nextBug._id
+    bug.prevBugId = prevBug._id
+    return bug
   })
 }

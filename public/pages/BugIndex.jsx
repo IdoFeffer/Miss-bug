@@ -59,7 +59,6 @@ export function BugIndex() {
         const bugsToUpdate = bugs.map((currBug) =>
           currBug._id === savedBug._id ? savedBug : currBug
         )
-
         setBugs(bugsToUpdate)
         showSuccessMsg("Bug updated")
       })
@@ -70,6 +69,17 @@ export function BugIndex() {
     setFilterBy((prevFilter) => ({ ...prevFilter, ...filterBy }))
   }
 
+  function onNextPage(){
+    setFilterBy(prevFilter => ({...prevFilter, pageIdx: prevFilter.pageIdx + 1}))
+  }
+
+  function onPrevPage(){
+    setFilterBy(prevFilter =>( {
+      ...prevFilter,
+      pageIdx: Math.max(0, prevFilter.pageIdx - 1)
+    }))
+  }  
+
   return (
     <section className="bug-index main-content">
       <BugFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
@@ -77,6 +87,11 @@ export function BugIndex() {
         <h3>Bug List</h3>
         <button onClick={onAddBug}>Add Bug</button>
       </header>
+
+      <section className="nextPrev">
+        <button onClick={onPrevPage}>Prev</button>
+        <button onClick={onNextPage}>Next</button>
+      </section>
 
       <BugList bugs={bugs} onRemoveBug={onRemoveBug} onEditBug={onEditBug} />
     </section>

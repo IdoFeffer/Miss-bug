@@ -25,7 +25,6 @@ app.get("/api/bug", (req, res) => {
     pageIdx: +req.query.pageIdx || 0,
   }
 
-  console.log("FILTER BY:", filterBy)
   bugService
     .query(filterBy)
     .then((bugs) => res.send(bugs))
@@ -36,30 +35,35 @@ app.get("/api/bug", (req, res) => {
 })
 
 //* Get/Read by id
-app.get("/api/bug/:bugId", (req, res) => {
+app.get('/api/bug/:bugId', (req, res) => {
   const { bugId } = req.params
-  let visitedBugIds = []
-
+  console.log('Got bugId from URL:', bugId)
+  let bugIds = []
   try {
-    visitedBugIds = JSON.parse(req.cookies.visitedBugs || "[]")
-  } catch {
-    visitedBugIds = []
+      bugIds = JSON.parse(req.cookies.bugIds || '[]')
+  } catch (err) {
+      bugIds = []
   }
-  if (!visitedBugIds.includes(bugId)) visitedBugIds.push(bugId)
-  if (visitedBugIds.length > 3) {
-    return res.status(401).send("Wait for a bit")
+  console.log(bugIds)
+  if (!bugIds.includes(bugId)) {
+      bugIds.push(bugId)
   }
 
-  res.cookie("visitedBugs", JSON.stringify(visitedBugIds), { maxAge: 7000 })
-  console.log("User visited at the following bugs:", visitedBugIds)
+  if (bugIds.length > 3) {
+      console.log('error')
+      return res.status(401).send('Wait for a bit')
+  }
 
-  bugService
-    .getById(bugId)
-    .then((bug) => res.send(bug))
-    .catch((err) => {
-      console.error("Error:", err)
-      res.status(400).send("Cannot get bug")
-    })
+  res.cookie('bugIds', JSON.stringify(bugIds), { maxAge: 7 * 1000 })
+
+  bugService.getById(bugId)
+      .then(bug => {
+          res.send(bug)
+      })
+      .catch(err => {
+          loggerService.error('Cannot get bug', err)
+          res.status(400).send('Cannot get bug')
+      })
 })
 
 //* Remove/Delete
