@@ -2,7 +2,6 @@ import { utilService } from "./util.service.js"
 import { storageService } from "./async-storage.service.js"
 
 const url = "/api/bug/"
-
 // const STORAGE_KEY = 'bugs'
 // _createBugs()
 
@@ -15,24 +14,33 @@ export const bugService = {
   _setNextPrevBugId,
 }
 
-function query(filterBy) {
-  return axios.get(url).then((res) => res.data)
+// function query(filterBy) {
+//   return axios.get(url).then((res) => res.data)
+// }
+
+function query(filterBy = {}) {
+  return axios.get('/api/bug', { params: filterBy }).then(res => res.data)
 }
 
 function getById(bugId) {
-  return axios
-    .get(url + bugId)
+  return axios.get(url + bugId)
     .then((res) => res.data)
     .then((bug) => _setNextPrevBugId(bug))
 }
 
 function remove(bugId) {
-  return axios.get(url + bugId + "/remove").then((res) => res.data)
+  return axios.delete(url + bugId).then((res) => res.data)
 }
 
 function save(bug) {
-  return axios.get(url + "save", { params: bug }).then((res) => res.data)
+  if (bug._id) {
+    return axios.put(url + bug._id, bug).then(res => res.data)
+  } else {
+    return axios.post(url, bug).then(res => res.data)
+  }
 }
+
+
 
 function _createBugs() {
   let bugs = utilService.loadFromStorage(STORAGE_KEY)
@@ -70,8 +78,8 @@ function getDefaultFilter() {
 function _setNextPrevBugId(bugId) {
   return axios.get(url).then((res) => {
     const bugs = res.data
-    const idx = bugs.findIndex(bug => String(bug._id) === String(bugId))
-    
+    const idx = bugs.findIndex((bug) => String(bug._id) === String(bugId))
+
     if (idx === -1) {
       return null
     }
