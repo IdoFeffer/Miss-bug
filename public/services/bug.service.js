@@ -86,7 +86,7 @@ function getDefaultFilter() {
 function _setNextPrevBugId(bug) {
   return query().then((bugs)=>{
     const bugIdx = bugs.findIndex((currBug)=>currBug._id === bug._id)
-    const nextBug = bugs[bugIdx + 1] ? bugs[bugIdx + 1] : bugs[0]
+    const nextBug = bugs[bugIdx + 1] ? bugs[bugIdx + 1] : bugs[0] 
     const prevBug =  bugs[bugIdx - 1] ? bugs[bugIdx - 1] : bugs[bugs.length - 1]
     bug.nextBugId = nextBug._id
     bug.prevBugId = prevBug._id

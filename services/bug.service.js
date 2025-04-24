@@ -40,13 +40,13 @@ function query(filterBy = {}) {
     )
   }
   filteredBugs.sort((a, b) => {
-    const valA = a[sortBy]
-    const valB = b[sortBy]
+    const bugA = a[sortBy]
+    const bugB = b[sortBy]
 
-    if (typeof valA === "string") {
-      return valA.localeCompare(valB) * sortDir
+    if (typeof bugA === "string") {
+      return bugA.localeCompare(bugB) * sortDir
     } else {
-      return (valA - valB) * sortDir
+      return (bugA - bugB) * sortDir
     }
   })
 

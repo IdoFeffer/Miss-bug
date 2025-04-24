@@ -16,7 +16,8 @@
   "description": "",
   "dependencies": {
     "cookie-parser": "^1.4.7",
-    "cors": "^2.8.5",
-    "express": "^5.1.0"
+    "cryptr": "^6.3.0",
+    "express": "^5.1.0",
+    "pdfkit": "^0.17.0"
   }
 }

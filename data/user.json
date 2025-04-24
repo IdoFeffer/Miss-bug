@@ -1,0 +1,91 @@
+[
+    {
+        "_id": "u101",
+        "username": "puki",
+        "fullname": "Puki Ja",
+        "password": "puki",
+        "score": 100,
+        "isAdmin": true
+    },
+    {
+        "_id": "u102",
+        "username": "dana",
+        "fullname": "Dana Smith",
+        "password": "dana",
+        "score": 100
+    },
+    {
+        "_id": "u103",
+        "username": "alex",
+        "fullname": "Alex Kim",
+        "password": "alex",
+        "score": 100
+    },
+    {
+        "_id": "u104",
+        "username": "roni",
+        "fullname": "Roni Bar",
+        "password": "roni",
+        "score": 100
+    },
+    {
+        "_id": "u105",
+        "username": "tomer",
+        "fullname": "Tomer Levi",
+        "password": "tomer",
+        "score": 100
+    },
+    {
+        "_id": "u106",
+        "username": "maya",
+        "fullname": "Maya Cohen",
+        "password": "maya",
+        "score": 100
+    },
+    {
+        "_id": "u107",
+        "username": "noa",
+        "fullname": "Noa Weiss",
+        "password": "noa",
+        "score": 100
+    },
+    {
+        "_id": "u108",
+        "username": "omer",
+        "fullname": "Omer Azulai",
+        "password": "omer",
+        "score": 100
+    },
+    {
+        "_id": "u109",
+        "username": "lior",
+        "fullname": "Lior Peer",
+        "password": "lior",
+        "score": 100
+    },
+    {
+        "_id": "u110",
+        "username": "gil",
+        "fullname": "Gil Ramon",
+        "password": "gil",
+        "score": 100
+    },
+    {
+        "username": "ido",
+        "password": "ido",
+        "fullname": "Ido Feffer",
+        "_id": "WDdE7"
+    },
+    {
+        "username": "hola",
+        "password": "hola",
+        "fullname": "Ido Feffer",
+        "_id": "vH5lI"
+    },
+    {
+        "username": "kobe",
+        "password": "kobe",
+        "fullname": "KobeKobe",
+        "_id": "WUgaR"
+    }
+]

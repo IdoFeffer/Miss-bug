@@ -1,74 +1,122 @@
 [
-  {
-    "_id": "a7",
-    "title": "Login fails",
-    "description": "User can't log in with correct credentials",
-    "severity": 1,
-    "createdAt": 1643107359454,
-    "labels": ["auth", "critical", "login"]
-  },
-  {
-    "_id": "a8",
-    "title": "Button not clickable",
-    "description": "Submit button has no response",
-    "severity": 2,
-    "createdAt": 1644107359454,
-    "labels": ["UI", "click", "critical"]
-  },
-  {
-    "_id": "a9",
-    "title": "Layout broken on mobile",
-    "description": "UI is distorted on small screens",
-    "severity": 4,
-    "createdAt": 1645107359454,
-    "labels": ["UI", "responsive"]
-  },
-  {
-    "_id": "b1",
-    "title": "Data not saved",
-    "description": "Changes disappear after refresh",
-    "severity": 3,
-    "createdAt": 1646107359454,
-    "labels": ["storage", "data-loss", "critical"]
-  },
-  {
-    "_id": "b2",
-    "title": "Image upload fails",
-    "description": "Upload stuck with no error message",
-    "severity": 5,
-    "createdAt": 1647107359454,
-    "labels": ["upload", "image", "UX"]
-  },
-  {
-    "_id": "b3",
-    "title": "Notifications not working",
-    "description": "No alerts shown for new messages",
-    "severity": 1,
-    "createdAt": 1648107359454,
-    "labels": ["notifications", "low-priority"]
-  },
-  {
-    "_id": "b4",
-    "title": "Search returns empty",
-    "description": "Results not shown even when data exists",
-    "severity": 2,
-    "createdAt": 1649107359454,
-    "labels": ["search", "UX", "auth"]
-  },
-  {
-    "_id": "b5",
-    "title": "Crash on logout",
-    "description": "App crashes when clicking logout",
-    "severity": 2,
-    "createdAt": 1650107359454,
-    "labels": ["logout", "crash", "critical"]
-  },
-  {
-    "_id": "b6",
-    "title": "Incorrect total in cart",
-    "description": "Price calculation is wrong in checkout",
-    "severity": 3,
-    "createdAt": 1651107359454,
-    "labels": ["cart", "calculation", "payment"]
-  }
-]
+    {
+      "_id": "b001",
+      "title": "Login button not responding but who cares",
+      "description": "Clicking 'Login' does nothing on Chrome mobile.",
+      "severity": 2,
+      "createdAt": 1643501100000,
+      "labels": ["ui", "mobile", "urgent"],
+      "creator": {
+        "_id": "u101",
+        "fullname": "Puki Ja"
+      }
+    },
+    {
+      "_id": "b002",
+      "title": "404 on settings page",
+      "description": "Users are getting 404 errors when navigating to /settings.",
+      "severity": 4,
+      "createdAt": 1644222600000,
+      "labels": ["routing", "backend", "critical", "safari"],
+      "creator": {
+        "_id": "u102",
+        "fullname": "Dana Smith"
+      }
+    },
+    {
+      "_id": "b003",
+      "title": "Form validation not working",
+      "description": "Invalid emails are being accepted in the signup form.",
+      "severity": 3,
+      "createdAt": 1644059800000,
+      "labels": ["validation", "frontend", "medium"],
+      "creator": {
+        "_id": "u103",
+        "fullname": "Alex Kim"
+      }
+    },
+    {
+      "_id": "b004",
+      "title": "Image upload fails silently",
+      "description": "Uploading a profile picture gives no feedback and does not save.",
+      "severity": 5,
+      "createdAt": 1643600000000,
+      "labels": ["upload", "user-feedback", "major", "dev-branch"],
+      "creator": {
+        "_id": "u104",
+        "fullname": "Roni Bar"
+      }
+    },
+    {
+      "_id": "b005",
+      "title": "Navbar flickers on scroll",
+      "description": "On Safari, the navbar blinks when scrolling down quickly.",
+      "severity": 1,
+      "createdAt": 1643130000000,
+      "labels": ["safari", "low-priority", "visual"],
+      "creator": {
+        "_id": "u105",
+        "fullname": "Tomer Levi"
+      }
+    },
+    {
+      "_id": "b006",
+      "title": "Mobile view overlaps text",
+      "description": "Text blocks overlap on smaller screens.",
+      "severity": 3,
+      "createdAt": 1644500000000,
+      "labels": ["mobile", "ui", "frontend"],
+      "creator": {
+        "_id": "u106",
+        "fullname": "Maya Cohen"
+      }
+    },
+    {
+      "_id": "b007",
+      "title": "Upload fails with large files",
+      "description": "Files over 5MB fail to upload with no error message.",
+      "severity": 5,
+      "createdAt": 1644600000000,
+      "labels": ["upload", "critical"],
+      "creator": {
+        "_id": "u107",
+        "fullname": "Noa Weiss"
+      }
+    },
+    {
+      "_id": "b008",
+      "title": "Sidebar not collapsible",
+      "description": "User can't collapse the sidebar on desktop.",
+      "severity": 2,
+      "createdAt": 1644700000000,
+      "labels": ["ui", "desktop", "low-priority"],
+      "creator": {
+        "_id": "u108",
+        "fullname": "Omer Azulai"
+      }
+    },
+    {
+      "_id": "b009",
+      "title": "Login success message is missing",
+      "description": "After logging in, there’s no confirmation or redirect.",
+      "severity": 3,
+      "createdAt": 1644800000000,
+      "labels": ["ui", "user-feedback"],
+      "creator": {
+        "_id": "u109",
+        "fullname": "Lior Peer"
+      }
+    },
+    {
+      "_id": "b010",
+      "title": "Visual glitch on Safari carousel",
+      "description": "Carousel skips frames and flickers on Safari.",
+      "severity": 4,
+      "createdAt": 1644900000000,
+      "labels": ["safari", "visual", "critical"],
+      "creator": {
+        "_id": "u110",
+        "fullname": "Gil Ramon"
+      }
+    }
+  ]

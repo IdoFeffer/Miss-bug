@@ -2,10 +2,8 @@ const { useState, useEffect } = React
 
 // import { bugService } from "../services/bug.service.local.js"
 import { bugService } from "../services/bug.service.js"
-import {
-  showSuccessMsg,
-  showErrorMsg,
-} from '../services/event-bus.service.js'
+import { showSuccessMsg, showErrorMsg } from "../services/event-bus.service.js"
+import {PDFDocument} from "pdfkit-table"
 
 import { BugFilter } from "../cmps/BugFilter.jsx"
 import { BugList } from "../cmps/BugList.jsx"
@@ -51,6 +49,7 @@ export function BugIndex() {
 
   function onEditBug(bug) {
     const severity = +prompt("New severity?", bug.severity)
+    if (!severity) return 
     const bugToSave = { ...bug, severity }
 
     bugService
@@ -69,17 +68,43 @@ export function BugIndex() {
     setFilterBy((prevFilter) => ({ ...prevFilter, ...filterBy }))
   }
 
-  function onNextPage(){
-    setFilterBy(prevFilter => ({...prevFilter, pageIdx: prevFilter.pageIdx + 1}))
+  function onNextPage() {
+    setFilterBy((prevFilter) => ({
+      ...prevFilter,
+      pageIdx: prevFilter.pageIdx + 1 
+    }))
   }
 
-  function onPrevPage(){
-    setFilterBy(prevFilter =>( {
+  function onPrevPage() {
+    setFilterBy((prevFilter) => ({
       ...prevFilter,
-      pageIdx: Math.max(0, prevFilter.pageIdx - 1)
+      pageIdx: Math.max(0, prevFilter.pageIdx - 1),
     }))
-  }  
+  }
 
+
+  function onDownloadPDF() {
+    fetch('/api/bug/pdf')
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to download PDF')
+        return res.blob()
+      })
+      .then(blob => {
+        const url = window.URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = url
+        link.download = 'bugs.pdf'
+        document.body.appendChild(link)
+        link.click()
+        link.remove()
+      })
+      .catch(err => {
+        console.error('Error downloading PDF:', err)
+        showErrorMsg('Failed to download PDF')
+      })
+  }
+  
+  
   return (
     <section className="bug-index main-content">
       <BugFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
@@ -87,7 +112,7 @@ export function BugIndex() {
         <h3>Bug List</h3>
         <button onClick={onAddBug}>Add Bug</button>
       </header>
-
+      <button onClick={onDownloadPDF}>Download pdf</button>
       <section className="nextPrev">
         <button onClick={onPrevPage}>Prev</button>
         <button onClick={onNextPage}>Next</button>

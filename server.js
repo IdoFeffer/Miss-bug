@@ -1,8 +1,11 @@
 import express from "express"
-import { bugService } from "./services/bug.service.js"
-import { loggerService } from "./services/logger.service.js"
-import cookieParser from "cookie-parser"
 import path from "path"
+import cookieParser from "cookie-parser"
+
+import { bugService } from "./services/bug.service.js"
+import { userService } from "./services/user.service.js"
+import { loggerService } from "./services/logger.service.js"
+import { authService } from './services/auth.service.js'
 
 const app = express()
 
@@ -35,35 +38,36 @@ app.get("/api/bug", (req, res) => {
 })
 
 //* Get/Read by id
-app.get('/api/bug/:bugId', (req, res) => {
+app.get("/api/bug/:bugId", (req, res) => {
   const { bugId } = req.params
-  console.log('Got bugId from URL:', bugId)
+  console.log("Got bugId from URL:", bugId)
   let bugIds = []
   try {
-      bugIds = JSON.parse(req.cookies.bugIds || '[]')
+    bugIds = JSON.parse(req.cookies.bugIds || "[]")
   } catch (err) {
-      bugIds = []
+    bugIds = []
   }
   console.log(bugIds)
   if (!bugIds.includes(bugId)) {
-      bugIds.push(bugId)
+    bugIds.push(bugId)
   }
 
   if (bugIds.length > 3) {
-      console.log('error')
-      return res.status(401).send('Wait for a bit')
+    console.log("error")
+    return res.status(401).send("Wait for a bit")
   }
 
-  res.cookie('bugIds', JSON.stringify(bugIds), { maxAge: 7 * 1000 })
+  res.cookie("bugIds", JSON.stringify(bugIds), { maxAge: 7 * 1000 })
 
-  bugService.getById(bugId)
-      .then(bug => {
-          res.send(bug)
-      })
-      .catch(err => {
-          loggerService.error('Cannot get bug', err)
-          res.status(400).send('Cannot get bug')
-      })
+  bugService
+    .getById(bugId)
+    .then((bug) => {
+      res.send(bug)
+    })
+    .catch((err) => {
+      loggerService.error("Cannot get bug", err)
+      res.status(400).send("Cannot get bug")
+    })
 })
 
 //* Remove/Delete
@@ -116,6 +120,78 @@ app.put("/api/bug/:bugId", (req, res) => {
       res.status(400).send("Cannot save bug")
     })
 })
+
+// TODO: PDF file
+app.get('/api/bug/pdf', (req, res) => {
+  bugService.query().then(bugs => {
+    buildBugsPDF(bugs, 'all-bugs.pdf')
+      .then(filePath => res.download(filePath, 'bugs.pdf'))
+      .catch(err => {
+        console.error('Failed to generate PDF:', err)
+        res.status(500).send('Could not generate PDF')
+      })
+  }).catch(err => {
+    console.error('Cannot get bug', err)
+    res.status(400).send('Cannot get bug')
+  })
+})
+
+//* User API
+app.get('/api/user', (req, res) => {
+  userService.query()
+      .then(users => res.send(users))
+      .catch(err => {
+          loggerService.error('Cannot load users', err)
+          res.status(400).send('Cannot load users')
+      })
+})
+
+app.get('/api/user/:userId', (req, res) => {
+  const { userId } = req.params
+
+  userService.getById(userId)
+      .then(user => res.send(user))
+      .catch(err => {
+          loggerService.error('Cannot load user', err)
+          res.status(400).send('Cannot load user')
+      })
+})
+
+//* Auth API
+app.post('/api/auth/login', (req, res) => {
+  const { username, password } = req.body
+  authService.checkLogin({ username, password })
+      .then(user => {
+          const loginToken = authService.getLoginToken(user)
+          res.cookie('loginToken', loginToken)
+          res.send(user)
+      })
+      .catch(() => res.status(404).send('Invalid Credentials'))
+})
+
+app.post('/api/auth/signup', (req, res) => {
+  const { username, password, fullname } = req.body
+  userService.add({ username, password, fullname })
+      .then(user => {
+          if (user) {
+              const loginToken = authService.getLoginToken(user)
+              res.cookie('loginToken', loginToken)
+              res.send(user)
+          } else {
+              res.status(400).send('Cannot signup')
+          }
+      })
+      .catch(err => {
+          console.log('err:', err)
+          res.status(400).send('Username taken.')
+      })
+})
+
+app.post('/api/auth/logout', (req, res) => {
+  res.clearCookie('loginToken')
+  res.send('logged-out!')
+})
+
 
 //* Fallback route
 app.get("/*all", (req, res) => {
