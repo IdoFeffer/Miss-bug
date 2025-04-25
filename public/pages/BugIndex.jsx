@@ -1,9 +1,8 @@
 const { useState, useEffect } = React
 
-// import { bugService } from "../services/bug.service.local.js"
 import { bugService } from "../services/bug.service.js"
 import { showSuccessMsg, showErrorMsg } from "../services/event-bus.service.js"
-import {PDFDocument} from "pdfkit-table"
+// import {PDFDocument} from "pdfkit-table"
 
 import { BugFilter } from "../cmps/BugFilter.jsx"
 import { BugList } from "../cmps/BugList.jsx"
@@ -12,12 +11,16 @@ export function BugIndex() {
   const [bugs, setBugs] = useState(null)
   const [filterBy, setFilterBy] = useState(bugService.getDefaultFilter())
 
-  useEffect(loadBugs, [filterBy])
+  useEffect(() => {
+    loadBugs()
+  }, [filterBy])
 
   function loadBugs() {
     bugService
       .query(filterBy)
-      .then(setBugs)
+      .then((res) => {
+        setBugs(res)
+      })
       .catch((err) => showErrorMsg(`Couldn't load bugs - ${err}`))
   }
 
@@ -83,6 +86,7 @@ export function BugIndex() {
   }
 
 
+  // TODO:
   function onDownloadPDF() {
     fetch('/api/bug/pdf')
       .then(res => {
@@ -103,8 +107,7 @@ export function BugIndex() {
         showErrorMsg('Failed to download PDF')
       })
   }
-  
-  
+
   return (
     <section className="bug-index main-content">
       <BugFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
@@ -117,8 +120,10 @@ export function BugIndex() {
         <button onClick={onPrevPage}>Prev</button>
         <button onClick={onNextPage}>Next</button>
       </section>
-
-      <BugList bugs={bugs} onRemoveBug={onRemoveBug} onEditBug={onEditBug} />
+      {(!bugs || !bugs.length)
+      ? <div>No bugs</div>
+      : <BugList bugs={bugs} onRemoveBug={onRemoveBug} onEditBug={onEditBug} />
+      }
     </section>
   )
 }

@@ -1,7 +1,6 @@
 const { useState, useEffect } = React
 const { Link, useParams } = ReactRouterDOM
 
-// import { bugService } from "../services/bug.service.local.js"
 import { bugService } from "../services/bug.service.js"
 import { showErrorMsg } from "../services/event-bus.service.js"
 
@@ -10,7 +9,6 @@ export function BugDetails() {
   const { bugId } = useParams()
 
   useEffect(() => {
-    bugService
     loadBug()
   }, [bugId])
 
@@ -22,11 +20,9 @@ export function BugDetails() {
   }
 
   if (!bug) return <div>Loading bug...</div>
-
   return (
     <div className="bug-details">
       <h3>Bug Details</h3>
-      {/* {!bug && <p className="loading">Loading....</p>} */}
       {bug && (
         <div>
           <h4>{bug.title}</h4>

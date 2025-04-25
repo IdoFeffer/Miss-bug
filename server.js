@@ -18,7 +18,6 @@ app.set("query parser", "extended")
 //* Express Routing:
 //* Read
 app.get("/api/bug", (req, res) => {
-  // const { txt = "", minSeverity = 0 } = req.query
   const filterBy = {
     txt: req.query.txt || "",
     minSeverity: +req.query.minSeverity || 0,
@@ -192,6 +191,20 @@ app.post('/api/auth/logout', (req, res) => {
   res.send('logged-out!')
 })
 
+app.get('/echo-cookies', (req, res) => {
+  var cookieCount = 0
+  var resStr = ''
+
+  for (const cookie in req.cookies) {
+      const cookieStr = `${cookie}: ${req.cookies[cookie]}`
+      console.log(cookieStr)
+
+      resStr += cookieStr + '\n'
+      cookieCount++
+  }
+  resStr += `Total ${cookieCount} cookies`
+  res.send(resStr)
+})
 
 //* Fallback route
 app.get("/*all", (req, res) => {

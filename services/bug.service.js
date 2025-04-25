@@ -2,7 +2,6 @@ import fs from "fs"
 import { utilService } from "./util.service.js"
 
 const bugs = utilService.readJsonFile("data/bug.json")
-
 export const bugService = {
   query,
   getById,
@@ -11,52 +10,57 @@ export const bugService = {
 }
 
 function query(filterBy = {}) {
-  const {
-    txt = "",
-    minSeverity = 0,
-    labels = [],
-    sortBy = "title",
-    sortDir = 1,
-    pageIdx = 0,
-  } = filterBy
-
-  const normalizedLabels = Array.isArray(labels)
-    ? labels.map((label) => label.toLowerCase())
-    : [labels.toLowerCase()]
-
-  let filteredBugs = bugs
-  if (txt) {
-    const regex = new RegExp(txt, "i")
-    filteredBugs = filteredBugs.filter((bug) => regex.test(bug.title))
-  }
-  if (minSeverity) {
-    filteredBugs = filteredBugs.filter((bug) => bug.severity >= +minSeverity)
-  }
-  if (normalizedLabels.length) {
-    filteredBugs = filteredBugs.filter((bug) =>
-      bug.labels?.some((label) =>
-        normalizedLabels.includes(label.toLowerCase())
-      )
-    )
-  }
-  filteredBugs.sort((a, b) => {
-    const bugA = a[sortBy]
-    const bugB = b[sortBy]
-
-    if (typeof bugA === "string") {
-      return bugA.localeCompare(bugB) * sortDir
-    } else {
-      return (bugA - bugB) * sortDir
-    }
-  })
-
-  const pageSize = 3
-  const startIdx = pageIdx * pageSize
-  const bugsPage = filteredBugs.slice(startIdx, startIdx + pageSize)
-
-  return Promise.resolve(bugsPage)
-  // return Promise.resolve(filteredBugs)
+  console.log(bugs)
+  return Promise.resolve(bugs)
 }
+
+// function query(filterBy = {}) {
+//   const {
+//     txt = "",
+//     minSeverity = 0,
+//     labels = [],
+//     sortBy = "title",
+//     sortDir = 1,
+//     pageIdx = 0,
+//   } = filterBy
+
+//   const normalizedLabels = Array.isArray(labels)
+//     ? labels.map((label) => label.toLowerCase())
+//     : [labels.toLowerCase()]
+
+//   let filteredBugs = bugs
+//   if (txt) {
+//     const regex = new RegExp(txt, "i")
+//     filteredBugs = filteredBugs.filter((bug) => regex.test(bug.title))
+//   }
+//   if (minSeverity) {
+//     filteredBugs = filteredBugs.filter((bug) => bug.severity >= +minSeverity)
+//   }
+//   if (normalizedLabels.length) {
+//     filteredBugs = filteredBugs.filter((bug) =>
+//       bug.labels?.some((label) =>
+//         normalizedLabels.includes(label.toLowerCase())
+//       )
+//     )
+//   }
+//   filteredBugs.sort((a, b) => {
+//     const bugA = a[sortBy]
+//     const bugB = b[sortBy]
+
+//     if (typeof bugA === "string") {
+//       return bugA.localeCompare(bugB) * sortDir
+//     } else {
+//       return (bugA - bugB) * sortDir
+//     }
+//   })
+
+//   const pageSize = 3
+//   const startIdx = pageIdx * pageSize
+//   const bugsPage = filteredBugs.slice(startIdx, startIdx + pageSize)
+//   // return Promise.resolve(bugsPage)
+//   return Promise.resolve(bugs)
+//   // return Promise.resolve(filteredBugs)
+// }
 
 function getById(bugId) {
   const bug = bugs.find((bug) => bug._id === bugId)
